@@ -34,9 +34,9 @@ The goals / steps of this project are the following:
 
 You're reading it!
 
-###Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
 The code for this step is contained in function `get_hog_features` in the program file `CarDetectorFunctions.py` in lines #304 through #321.  
 
@@ -51,7 +51,7 @@ Here is an example using the `YUV` color space and HOG parameters of `orientatio
 ![Car and HOG](output_images/car-hog.jpg)
 ![Car and HOG](output_images/notcar-hog.jpg)
 
-####2. Explain how you settled on your final choice of HOG parameters.
+#### 2. Explain how you settled on your final choice of HOG parameters.
 
 I tried various combinations of parameters and the parameters above appeared to show the best contrast when combining all the channels of a color image.  RGB did not appear to do well for HOG extraction.  Other color spaces did ok but it seemed that YUV was the best.  Changing the orientation from 9 to more bins had increasingly worse results most likely due to overfitting; reducing the orientations seemed to generalize too much and got more false positives.  Increasing the pixels per cell also seemed to generalize too much causing more false positives.
 
