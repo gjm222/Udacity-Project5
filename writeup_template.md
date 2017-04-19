@@ -55,9 +55,9 @@ Here is an example using the `YUV` color space and HOG parameters of `orientatio
 
 I tried various combinations of parameters and the parameters above appeared to show the best contrast when combining all the channels of a color image.  RGB did not appear to do well for HOG extraction.  Other color spaces did ok but it seemed that YUV was the best.  Changing the orientation from 9 to more bins had increasingly worse results most likely due to overfitting; reducing the orientations seemed to generalize too much and got more false positives.  Increasing the pixels per cell also seemed to generalize too much causing more false positives.
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I trained a linear SVM using HOG, color features, and spatial binning.  The code is located in `CarDetectorTrainer.py` in lines #54 through #106.  The feature extraction is done by calling function `extract_features` on lines #66 and #72 in `CarDetectorTrainer.py`, which extracts car as well as non-car features in which to train.  Function `extract_features` is located in the `CarDetectorFunctions.py` file in lines #468 through #518.  `extract_features` is configurable to do HOG, color histogram, and spatial binning of the image; all the features were concatenated together and sent back.  The car and non-car features were then stacked to a new array and normalized using sklearn's `StandarScaler` in order to get a balanced weighting of the values of each feature set.  A labels vectore/array was created to match the features and then all the data was split into a training and test set on line #96 in `CarDetectorTrainer.py`.  The data was then trained/fitted on lines #103 and #106.  All necessary objects were saved off to a pickle file for future use.
 
 ###Sliding Window Search
 
