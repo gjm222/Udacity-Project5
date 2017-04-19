@@ -44,17 +44,16 @@ I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an 
 
 ![Car and Non-car](output_images/car-noncar.jpg)
 
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+I then explored different color spaces such as YrCrb, RGB, LUV, and YUV, and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
 Here is an example using the `YUV` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
-
 
 ![Car and HOG](output_images/car-hog.jpg)
 ![Car and HOG](output_images/notcar-hog.jpg)
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and the parameters above appeared to show the best contrast when combining all the channels of a color image.
+I tried various combinations of parameters and the parameters above appeared to show the best contrast when combining all the channels of a color image.  RGB did not appear to do well for HOG extraction.  Other color spaces did ok but it seemed that YUV was the best.  Changing the orientation from 9 to more bins had increasingly worse results most likely due to overfitting; reducing the orientations seemed to generalize too much and got more false positives.  Increasing the pixels per cell also seemed to generalize too much causing more false positives.
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
