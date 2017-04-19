@@ -50,6 +50,7 @@ Here is an example using the `YUV` color space and HOG parameters of `orientatio
 
 
 ![Car and HOG](output_images/car-hog.jpg)
+![Car and HOG](output_images/notcar-hog.jpg)
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
