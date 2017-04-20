@@ -69,7 +69,9 @@ Sliding windows were used by calling function `find_cars` in `CarDetector.yp` in
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+The performance was optimized by doing the HOG feature extraction once for the whole image and using position pointers to extract HOG data for each window as opposed to extracting HOG features on every window found each time.  
+
+Fewer false positives where achieved by cropping off the upper vertical portion of the image and searching using three scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Applying heatmaps also eliminated false positives by only keeping overlapping boxes of detected vehicles on 2 or more.  Here are some example images:
 
 ![alt text][image4]
 ---
