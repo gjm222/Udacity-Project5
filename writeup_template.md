@@ -100,8 +100,8 @@ Here's an example result showing the heatmap from a series of frames of video, t
 ![Heat5](output_images/heat5.jpg)
 ![Heat6](output_images/heat6.jpg)
 
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![Heat6](output_images/labeled3.jpg)
+### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames after thresholding:
+![Labeled](output_images/labeled3.jpg)
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
 ![Bounded](output_images/labeled2.jpg)
@@ -116,4 +116,16 @@ Here's an example result showing the heatmap from a series of frames of video, t
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+
+I mainly used the techniques provided in the lessons. I built the heatmap while locating cars instead of recording positions and then building the heatmap which improved performance. Deviating from what was presented in the lessons did not seem to improve the model at all.  I would need much more time to fiddle with all the parameters and study how each affects the result.  
+
+Needs lots of samples. Extraction did not do near as well when using a smaller amounts of training samples.  So, i think more samples would make it more robust.
+
+One problem with this version is that it may not track cars accurately and there realtime position when they are doing sharp turns because the smoothing(averaging of the frames) may not be quick enough to detect .  A better algorithym could be made to specifically look for sharp changes; more would also need to be done about false positives since the algorithym would need to be more sensitive to changes.
+
+An improvement in performance could be made when averaging the frames by using the coordinates of the labels only and keeping track of each vehicle separately.
+
+
+
+
 
