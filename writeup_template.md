@@ -74,20 +74,20 @@ The performance was optimized by doing the HOG feature extraction once for the w
 
 Fewer false positives where achieved by cropping off the upper vertical portion of the image and searching using three scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Applying heatmaps also eliminated false positives by only keeping overlapping boxes of detected vehicles on 2 or more.  Here are is an image after it was heatmapped and thresholded:
 
-![Car and HOG](output_images/labeled.jpg)
+![Labeled](output_images/labeled.jpg)
 ---
 
 ### Video Implementation
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./marked_video.mp4)
 
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 I built a heatmaps of the positive detections in each frame and for each scaling factor of the video in file `CarDetectorFunction.py`, function `find_cars`, on line #464; The three heatmaps generated for each scaling factor used and region were added together and then a threshold was applied in file `CarDetector.py` on line 82 to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
-To smooth out the detections 12 frames of heatmaps were saved and the average of those were used to draw the boxes around the vehicle.
+To smooth out the detections 12 frames of heatmaps were saved and the average of those were used to draw the boxes around the vehicle.  This was done in `CarDetector.py` in lines #84 through #94.
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
