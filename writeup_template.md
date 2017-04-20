@@ -59,11 +59,11 @@ I tried various combinations of parameters and the parameters above appeared to 
 
 I trained a linear SVM using HOG, color features, and spatial binning.  The code is located in `CarDetectorTrainer.py` in lines #54 through #106.  The feature extraction is done by calling function `extract_features` on lines #66 and #72 in `CarDetectorTrainer.py`, which extracts car as well as non-car features in which to train.  Function `extract_features` is located in the `CarDetectorFunctions.py` file in lines #468 through #518.  `extract_features` is configurable to do HOG, color histogram, and spatial binning of the image; all the features were concatenated together and sent back.  The car and non-car features were then stacked to a new array and normalized using sklearn's `StandarScaler` in order to get a balanced weighting of the values of each feature set.  A labels vectore/array was created to match the features and then all the data was split into a training and test set on line #96 in `CarDetectorTrainer.py`.  The data was then trained/fitted on lines #103 and #106.  All necessary objects were saved off to a pickle file for future use.
 
-###Sliding Window Search
+### Sliding Window Search
 
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+#### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+Sliding windows were used by calling function `find_cars` in `CarDetector.yp` in lines #58, #67, and #75; The `find_cars` function resides in file `CarDetectorFunctions.py` on lines #379 through #460.  The `find_cars` function was implemented to accept a scaling factor to change the size of window size and perform HOG and color feature extraction on the window; configurable regions were also used.  Three scaling factors were used for three different regions.  Scaling of 2.0 for the close up with a bigger region since the car images images are bigger, 1.5 for the middle, and .75 for the far of the part road. This was specified in `CarDetector.py` on lines #53 through #75.  The sliding window overlap amounted to 75% since the window moved by 2 pixels using 8x8 windows; this was specified in `CarDetectorFunctions.py` on line #411.
 
 ![alt text][image3]
 
