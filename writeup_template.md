@@ -73,7 +73,8 @@ The performance was optimized by doing the HOG feature extraction once for the w
 
 Fewer false positives where achieved by cropping off the upper vertical portion of the image and searching using three scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Applying heatmaps also eliminated false positives by only keeping overlapping boxes of detected vehicles on 2 or more.  Here are some example images:
 
-![alt text][image4]
+![Car and HOG](output_images/sliding2.jpg)
+![Car and HOG](output_images/sliding.jpg)
 ---
 
 ### Video Implementation
