@@ -40,13 +40,15 @@ for image in images:
         cars.append(image)    
      
 print('notcars=', len(notcars))        
-print('cars=', len(cars))        
+print('cars=', len(cars))   
+
+     
 ###############
-# Reduce the sample size because
-# The quiz evaluator times out after 13s of CPU time
-sample_size = 8000
-cars = cars[0:sample_size]
-notcars = notcars[0:sample_size]
+#Uncomment out below to use reduced sample size
+#sample_size = 8000
+#cars = cars[0:sample_size]
+#notcars = notcars[0:sample_size]
+
 
 # TRAIN 
 color_space = 'YUV' # Can be RGB, HSV, LUV, HLS, YUV, YCrCb

@@ -59,7 +59,7 @@ def process_image(image):
     
     
     #Threshold boxes    
-    y_start_stop = [400, 560] # Min and max in y to search in slide_window()
+    y_start_stop = [400, 600] # Min and max in y to search in slide_window()
     ystart = y_start_stop[0] #ystart = 400
     ystop = y_start_stop[1] #ystop = 656
     
@@ -71,12 +71,22 @@ def process_image(image):
     ystart = y_start_stop[0] #ystart = 400
     ystop = y_start_stop[1] #ystop = 656
     
-    scale = 0.75
+    scale = 1.0
     out_img2, heatmap3 = find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
     
     
     #Add all scaled heatmaps together
     heatmap = heatmap1 + heatmap2 + heatmap3
+    
+    #visual
+    plt.figure(figsize=(6,12))
+    if totimgs >= 20 and totimgs <= 25:
+        #output marked up lanes
+        #outname = 'output_images\\thresh.jpg'
+        #cv2.imwrite(outname, (threshHeatMap * 255) 
+        print(totimgs)        
+        plt.imshow(heatmap, cmap='hot')
+    
     
     #Threshold out the ones with not enough heat
     threshHeatMap = apply_threshold(heatmap, 2)
@@ -92,7 +102,7 @@ def process_image(image):
         newmap += heatmap
      
     threshHeatMap = newmap // len(framesq)    
-    
+        
     
     #Heat labels
     labels = label(threshHeatMap)
@@ -101,6 +111,16 @@ def process_image(image):
     #Cobine labeled boxes
     draw_img = np.copy(image)
     draw_img = draw_labeled_bboxes(draw_img, labels)
+    
+    #visual
+    if totimgs == 25:    
+        plt.figure(figsize=(6,12))
+        plt.imshow(draw_img)
+        plt.figure(figsize=(6,12))
+        plt.imshow(labels[0], cmap='gray')
+        
+    
+    totimgs += 1
     
     return draw_img
     #plt.imshow(draw_img)
@@ -136,7 +156,7 @@ def process_image(image):
     plt.imshow(draw_img)
     '''
 
-plotcount = 0
+plotcount = 1
 totimgs = 0
 plt.figure(figsize=(11,12))
 framesq = []
@@ -150,9 +170,9 @@ for filename in images:
     process_image(image)
 '''
 
-output_video = 'marked_video.mp4'
-#input_video = 'test_video.mp4'
-input_video = 'project_video.mp4'
+output_video = 'marked_video_visual.mp4'
+input_video = 'test_video.mp4'
+#input_video = 'project_video.mp4'
 
 clip1 = VideoFileClip(input_video)
 video_clip = clip1.fl_image(process_image)

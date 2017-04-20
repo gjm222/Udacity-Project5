@@ -687,6 +687,13 @@ features, hog_image = features_for_vis(mpimg.imread(img),
 '''
 
 
+
+
+
+
+
+##################################
+
 dist_pickle = pickle.load( open("train_pickle.p", "rb" ) )
 svc = dist_pickle["svc"]
 X_scaler = dist_pickle["scaler"]
@@ -704,8 +711,10 @@ print(svc)
 print(X_scaler)
 
 
-fold2 = 'images\\cutouts\\'
-image = mpimg.imread(fold2+'bbox-example-image.jpg')
+
+fold2 = 'test_images\\'
+image = mpimg.imread(fold2+'test13.jpg')
+
 #draw_image = np.copy(image)
 
 # Uncomment the following line if you extracted training
@@ -713,20 +722,64 @@ image = mpimg.imread(fold2+'bbox-example-image.jpg')
 # image you are searching is a .jpg (scaled 0 to 255)
 #image = image.astype(np.float32)/255     
 
+
+
 #Find cars using one HOy_start_stop = [450, 600] # Min and max in y to search in slide_window()
+
+#y_start_stop = [400, 660] # Min and max in y to search in slide_window()
+#ystart = y_start_stop[0] #ystart = 400
+#ystop = y_start_stop[1] #ystop = 656
+
+
+
+#Find cars using one HOy_start_stop = [450, 600] # Min and max in y to search in slide_window()
+#Threshold boxes    
 y_start_stop = [400, 660] # Min and max in y to search in slide_window()
 ystart = y_start_stop[0] #ystart = 400
 ystop = y_start_stop[1] #ystop = 656
 
-scale = 1.2
-print('Find cars')    
-out_img, heatmap = find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
+scale = 2.0    
+out_img1, heatmap1 = find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
 
-#Threshold boxes
-threshHeatImg = apply_threshold(heatmap, 1)
+
+#Threshold boxes    
+y_start_stop = [400, 560] # Min and max in y to search in slide_window()
+ystart = y_start_stop[0] #ystart = 400
+ystop = y_start_stop[1] #ystop = 656
+
+scale = 1.5
+out_img2, heatmap2 = find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
+
+#Threshold boxes    
+y_start_stop = [400, 500] # Min and max in y to search in slide_window()
+ystart = y_start_stop[0] #ystart = 400
+ystop = y_start_stop[1] #ystop = 656
+
+scale = 1.0
+out_img3, heatmap3 = find_cars(image, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
+
+
+#Add all scaled heatmaps together
+heatmap = heatmap1 + heatmap2 + heatmap3
+
+plt.figure(figsize=(11,12))
+
+
+#draw before thresholding
+#img_before = np.copy(image)
+#img_before = cv2.bitwise_or(out_img1, out_img2)
+#img_before = cv2.bitwise_or(img_before, out_img3)
+#plt.imshow(img_before)
+
+
+
+#Threshold out the ones with not enough heat
+threshHeatMap = apply_threshold(heatmap, 2)
+
+
 
 #Heat labels
-labels = label(threshHeatImg)
+labels = label(threshHeatMap)
 print(labels[1], 'cars found')
 
 #Cobine labeled boxes
@@ -734,8 +787,19 @@ draw_img = np.copy(image)
 draw_img = draw_labeled_bboxes(draw_img, labels)
 
 #plt.imshow(draw_img)
+#out_img = cv2.addWeighted(out_img1, 1.0, out_img2, 1.0, 0)
+out_img = cv2.bitwise_or(out_img1, out_img2)
 
-r = 4
+out_img = cv2.bitwise_or(out_img, out_img3)
+
+#out_img = cv2.addWeighted(out_img, 1.0, out_img3, 1.0, 0)
+
+
+
+#plt.imshow(out_img)
+plt.imshow(draw_img)
+
+'''r = 5
 c = 2
 plt.figure(figsize=(11,12))
 plt.subplot(r, c, 1)    
@@ -752,9 +816,84 @@ plt.subplot(r, c, 6)
 plt.imshow(labels[0], cmap='gray')
 plt.subplot(r, c, 7)    
 plt.imshow(draw_img)
+'''
+
 
 
 ###########################################################################
+'''
+#PRINT out some a car and not car image
+cars = []
+notcars = []
+#Vehicle
 
 
+images = glob.glob('images\\Train\\**\\*.png', recursive=True)
+   
+for image in images:
+    if 'non-vehicles' in image:
+        notcars.append(image)
+    else:
+        cars.append(image)    
+     
+print('notcars=', len(notcars))        
+print('cars=', len(cars))   
 
+
+car_ind = np.random.randint(0, len(cars))
+noncar_ind = np.random.randint(0, len(notcars))
+
+# Plot an example of raw and scaled features
+#fig = plt.figure(figsize=(12,4))
+#plt.subplot(131)
+#plt.imshow(mpimg.imread(cars[car_ind]))
+#plt.title('Car Image')
+#plt.subplot(132)
+#plt.imshow(mpimg.imread(notcars[noncar_ind]))
+#plt.title('Non Car Image')
+ 
+orient = 9
+pix_per_cell = 8
+cell_per_block = 2
+
+feature_image = mpimg.imread(notcars[car_ind])                
+#feature_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+
+hog_features = []
+visual = []
+
+#hog_features, visual = get_hog_features(feature_image[:,:,channel], 
+#                                        orient, pix_per_cell, cell_per_block, 
+#                                        vis=True, feature_vec=True)
+
+hog_features, visuals = features_for_vis(feature_image, cspace='YUV', orient=9, pix_per_cell=8, cell_per_block=2, hog_channel='ALL')
+
+#features, visual = get_hog_features(feature_image, orient, 
+#                        pix_per_cell, cell_per_block, 
+#                        vis=True, feature_vec=False)
+
+
+print(visuals[0].shape)
+visual = (visuals[0] + visuals[1] + visuals[2]) / 3
+         
+         
+
+print(visual.shape)
+print(visuals[0])
+
+
+fig = plt.figure(figsize=(12,4))
+plt.subplot(131)
+plt.imshow(feature_image)
+plt.title('Non-Car Image')
+#plt.title('Car Image')
+plt.subplot(132)
+plt.imshow(visual, cmap='gray')
+plt.title('Hog Image All Channels')
+#plt.subplot(133)
+#plt.imshow(visual, cmap='gray')
+#plt.title('Hog Image All Channels')
+#plt.subplot(133)
+#plt.imshow(visual)
+#plt.title('Hog Image Channel 2')
+'''
