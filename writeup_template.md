@@ -63,18 +63,18 @@ I trained a linear SVM using HOG, color features, and spatial binning.  The code
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-Sliding windows were used by calling function `find_cars` in `CarDetector.yp` in lines #58, #67, and #75; The `find_cars` function resides in file `CarDetectorFunctions.py` on lines #379 through #460.  The `find_cars` function was implemented to accept a scaling factor to change the size of window size and perform HOG and color feature extraction on the window; configurable regions were also used.  Three scaling factors were used for three different regions.  Scaling of 2.0 for the close up with a bigger region since the car images images are bigger, 1.5 for the middle, and .75 for the far of the part road. This was specified in `CarDetector.py` on lines #53 through #75.  The sliding window overlap amounted to 75% since the window moved by 2 pixels using 8x8 windows; this was specified in `CarDetectorFunctions.py` on line #411.
+Sliding windows were used by calling function `find_cars` in `CarDetector.yp` in lines #58, #67, and #75; The `find_cars` function resides in file `CarDetectorFunctions.py` on lines #379 through #460.  The `find_cars` function was implemented to accept a scaling factor to change the size of window size and perform HOG and color feature extraction on the window; configurable regions were also used.  Three scaling factors were used for three different regions.  Scaling of 2.0 for the close up with a bigger region since the car images images are bigger, 1.5 for the middle, and .75 for the far of the part road. This was specified in `CarDetector.py` on lines #53 through #75.  The sliding window overlap amounted to 75% since the window moved by 2 pixels using 8x8 windows; this was specified in `CarDetectorFunctions.py` on line #411.  Here are some images with windows that were discovered.
 
-![alt text][image3]
+![Car Sliding Window](output_images/sliding2.jpg)
+![Car Sliding Window](output_images/sliding.jpg)
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 The performance was optimized by doing the HOG feature extraction once for the whole image and using position pointers to extract HOG data for each window as opposed to extracting HOG features on every window found each time.  
 
-Fewer false positives where achieved by cropping off the upper vertical portion of the image and searching using three scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Applying heatmaps also eliminated false positives by only keeping overlapping boxes of detected vehicles on 2 or more.  Here are some example images:
+Fewer false positives where achieved by cropping off the upper vertical portion of the image and searching using three scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Applying heatmaps also eliminated false positives by only keeping overlapping boxes of detected vehicles on 2 or more.  Here are is an image after it was heatmapped and thresholded:
 
-![Car and HOG](output_images/sliding2.jpg)
-![Car and HOG](output_images/sliding.jpg)
+![Car and HOG](output_images/labeled.jpg)
 ---
 
 ### Video Implementation
