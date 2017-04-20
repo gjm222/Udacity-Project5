@@ -1,6 +1,16 @@
 # Udacity-Project5
 
 ## root Directory
+| File        | Description   | 
+|:-------------:|:-------------:| 
+|CarDetector.py    | Car detection program| 
+|CarDetectorFunctions.py  | Shared vehicle detection functions  |
+|CarDetectorSandbox.py     | Used to test and for experimentation and to create image samples|
+|CarDetectorTrainer.py     | Trains on sample data and saves the resulting training data to the train_pickle.p file to be used for vehicle detection.    |
+|marked_video.mp4    | Resulting video after training on project_video.mp4  |
+|train_pickle.p     | Holds the traing data |
+|writeup_project5     | Summary of project and results  |
+
 ## output_images Directory
 | File        | Description   | 
 |:-------------:|:-------------:| 
